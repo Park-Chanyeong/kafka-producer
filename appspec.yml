@@ -2,7 +2,7 @@
 # os: 배포할 서버의 OS, Linux와 Windows 가능
 version: 0.0
 os: linux
-
+# 250909 github actions test
 # files에서 source, destination은 여러 개를 지정 할 수 있으며
 # 하위 디렉토리별로 destination을 다르게 지정 가능
 # source 항목이 디렉토리면, 디렉토리 안의 디렉토리/파일들이 copy 됨 (지정한 디렉토리 자체는 copy 되지 않음)
@@ -19,9 +19,19 @@ file_exists_behavior: OVERWRITE
 # pattern, except 키워드를 통해 대상 상세지정 가능
 permissions:
   - object: /src/kafka-producer
-    owner: ubuntu
-    group: ubuntu
+    owner: kafka
+    group: kafka
     mode: 755
 
 
 # hooks 를 통해 before/after 동작 수행 가능
+hooks:
+  AfterInstall:
+    - location: deploy/after_install.sh
+      timeout: 120
+      runas: kafka
+
+  ApplicationStart:
+    - location: deploy/application_start.sh
+      timeout: 60
+      runas: root
