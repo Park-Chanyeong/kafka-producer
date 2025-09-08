@@ -3,7 +3,7 @@ on:
   # 어떤 브랜치에서 어떤 동작 발생시 actions 를 실행시킬 것인지 정의
   # 실습에서는 master branch 에 push가 발생했을 때로 정의함
   push:
-    branches: [ main ]
+    branches: [ master ]
 
   workflow_dispatch:
 
@@ -19,12 +19,6 @@ jobs:
       # uses: 이미 만들어진 action을 사용할 때 사용
       # actions/checkout@4는 본 레파지토리의 내용을 checkout 하여 runner 서버에 저장함
       uses: actions/checkout@v4
-
-      # application.yml 파일 내 ## 부분을 실제 값으로 변경
-    - name: replace application.yml
-      env:
-        AUTH_KEY_SEOUL_DATA: ${{ secrets.AUTH_KEY_SEOUL_DATA }}
-      run: sed -ie "s/##auth_key_seoul_data##/$AUTH_KEY_SEOUL_DATA/g" ./config/application.yml
 
     - name: archive to tar.gz
       run: tar cvfz ./kafka-producer.tar.gz *
